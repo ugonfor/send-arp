@@ -18,5 +18,11 @@ sample : send-arp wlan0 192.168.10.2 192.168.10.1
 
 ## troble shooting
 
-[https://superuser.com/questions/1209497/how-do-you-enable-promiscuous-mode-in-vmware-workstation](https://superuser.com/questions/1209497/how-do-you-enable-promiscuous-mode-in-vmware-workstation)
-[https://communities.vmware.com/t5/VMware-Workstation-Pro/Allow-promiscuous-mode-vmware-Allow-promiscuousModePolicy/td-p/2296421](https://communities.vmware.com/t5/VMware-Workstation-Pro/Allow-promiscuous-mode-vmware-Allow-promiscuousModePolicy/td-p/2296421)
+* [https://superuser.com/questions/1209497/how-do-you-enable-promiscuous-mode-in-vmware-workstation](https://superuser.com/questions/1209497/how-do-you-enable-promiscuous-mode-in-vmware-workstation)
+* [https://communities.vmware.com/t5/VMware-Workstation-Pro/Allow-promiscuous-mode-vmware-Allow-promiscuousModePolicy/td-p/2296421](https://communities.vmware.com/t5/VMware-Workstation-Pro/Allow-promiscuous-mode-vmware-Allow-promiscuousModePolicy/td-p/2296421)
+
+## demo
+
+* demo.mp4 : demo on my(ugonfor) Attacker, Victim and Gateway.
+* However, ping from the victim goes to my host PC which is host of attacker(guest vm). I have tried to fix this issue, but I've cannot find the true solution.
+* On the other PC, I confirm that this code works correctly.
